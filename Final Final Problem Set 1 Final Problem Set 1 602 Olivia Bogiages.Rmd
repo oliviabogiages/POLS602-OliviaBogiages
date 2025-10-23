@@ -1,5 +1,5 @@
 ---
-title: "Problem Set 2-Final"
+title: "Problem Set 1-Final"
 author: "Olivia Bogiages"
 date: "2025-10-23"
 output: pdf_document
