@@ -1,0 +1,142 @@
+---
+title: "Data Analysis for Problem Set 3"
+author: "Olivia Bogiages"
+date: "2025-11-17"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+#load the data
+thermometer<-read.csv("https://raw.githubusercontent.com/MLBurnham/pols_602/refs/heads/main/data/thermometers.csv")
+
+#make an age variable from the birth year 
+thermometer$age<-2017-(thermometer$birth_year)
+
+#pick one feeling thermometer and one categorical demographic variable. 
+#Pick: thermometer on the alt-right and variable race
+
+
+#Spread and central tendency for all observations relating to the alt-right
+hist(thermometer$ft_altright, xlab="Thermometer_Rating", ylab="Frequency of Rating", main="Feeling toward Alt-Right Among All Surveyed")
+median(thermometer$ft_altright, na.rm=TRUE)
+mean(thermometer$ft_altright, na.rm=TRUE)
+sd(thermometer$ft_altright, na.rm=TRUE)
+ #histogram of thermometer rating for alt right among all
+hist (thermometer$ft_altright, xlab="Thermometer Rating", ylab="Frequency of Rating", main="Thermometer Rating Among Respondents")
+
+#spread and central tendency for each category in the demographic variable race
+#Central tendency and spread of thermometer rating of alt right among White people
+white_ftaltright<-thermometer %>% filter(race=="White") %>%
+    select(ft_altright)
+white_ftaltright %>% summarise( 
+mean=mean(ft_altright, na.rm=TRUE), median=median(ft_altright, na.rm=TRUE), sd=sd(ft_altright, na.rm=TRUE), n=n())
+ #histogram of thermometer rating for alt right among White people
+hist (white_ftaltright$ft_altright, xlab="Thermometer Rating", ylab="Frequency of Rating", main="Thermometer Rating Among White Respondents")
+
+#Spread and central tendency of thermometer rating about for alt right among Black people
+black_ftaltright<-thermometer %>% filter(race=="Black") %>%
+    select(ft_altright)
+black_ftaltright %>% summarise( 
+mean=mean(ft_altright, na.rm=TRUE), median=median(ft_altright, na.rm=TRUE), sd=sd(ft_altright, na.rm=TRUE), n=n())
+#histogram of thermometer rating for alt right among Black people 
+hist (black_ftaltright$ft_altright, xlab="Thermometer Rating", ylab="Frequency of Rating", main="Thermometer Rating Among Black Respondents")
+
+#spread and central tendency of thermometer rating about for alt right among Hispanic people
+hispanic_ftaltright<-thermometer %>% filter(race=="Hispanic") %>%
+    select(ft_altright)
+hispanic_ftaltright %>% summarise( 
+mean=mean(ft_altright, na.rm=TRUE), median=median(ft_altright, na.rm=TRUE), sd=sd(ft_altright, na.rm=TRUE), n=n())
+#histogram of thermometer rating for alt right among Hispanic people 
+hist (hispanic_ftaltright$ft_altright, xlab="Thermometer Rating", ylab="Frequency of Rating", main="Thermometer Rating Among Hispanic Respondents")
+
+#Spread and central tendency of thermometer rating about for alt right among Asian people
+asian_ftaltright<-thermometer %>% filter(race=="Asian") %>%
+    select(ft_altright)
+asian_ftaltright %>% summarise( 
+mean=mean(ft_altright, na.rm=TRUE), median=median(ft_altright, na.rm=TRUE), sd=sd(ft_altright, na.rm=TRUE), n=n())
+#histogram of thermometer rating for alt right among Asian people 
+hist (asian_ftaltright$ft_altright, xlab="Thermometer Rating", ylab="Frequency of Rating", main="Thermometer Rating Among Asian Respondents")
+
+#Spread and central tendency of thermometer rating about for alt right among Other races
+other_ftaltright<-thermometer %>% filter(race=="Other") %>%
+    select(ft_altright)
+other_ftaltright %>% summarise( 
+mean=mean(ft_altright, na.rm=TRUE), median=median(ft_altright, na.rm=TRUE), sd=sd(ft_altright, na.rm=TRUE), n=n())
+#histogram of thermometer rating for alt right among Other races
+hist (other_ftaltright$ft_altright, xlab="Thermometer Rating", ylab="Frequency of Rating", main="Thermometer Rating Among Other Respondents")
+
+#Spread and central tendency of thermometer rating about for alt right among Middle Easterner
+ME_ftaltright<-thermometer %>% filter(race=="Middle Eastern") %>%
+    select(ft_altright)
+ME_ftaltright %>% summarise( 
+mean=mean(ft_altright, na.rm=TRUE), median=median(ft_altright, na.rm=TRUE), sd=sd(ft_altright, na.rm=TRUE), n=n())
+#histogram of thermometer rating for alt right among Middle Easterners
+hist (ME_ftaltright$ft_altright, xlab="Thermometer Rating", ylab="Frequency of Rating", main="Thermometer Rating Among Middle Eastern Respondents")
+
+#Spread and central tendency of thermometer rating about for alt right among Mixed people
+mixed_ftaltright<-thermometer %>% filter(race=="Mixed") %>%
+    select(ft_altright)
+mixed_ftaltright %>% summarise( 
+mean=mean(ft_altright, na.rm=TRUE), median=median(ft_altright, na.rm=TRUE), sd=sd(ft_altright, na.rm=TRUE), n=n())
+#histogram of thermometer rating for alt right among Mixed people
+hist (mixed_ftaltright$ft_altright, xlab="Thermometer Rating", ylab="Frequency of Rating", main="Thermometer Rating Among Mixed Respondents")
+
+#Spread and central tendency of thermometer rating about for alt right among Native Americans
+NA_ftaltright<-thermometer %>% filter(race=="Native American") %>%
+    select(ft_altright)
+NA_ftaltright %>% summarise( 
+mean=mean(ft_altright, na.rm=TRUE), median=median(ft_altright, na.rm=TRUE), sd=sd(ft_altright, na.rm=TRUE), n=n())
+#histogram of thermometer rating for alt right among NA races
+hist (NA_ftaltright$ft_altright, xlab="Thermometer Rating", ylab="Frequency of Rating", main="Thermometer Rating Among Native American Respondents")
+
+#fit a regression model to estimate the conditional mean of the feeling thermometer for each category of the demographic variable race
+
+
+#conditional mean, regression model for race and rating the alt-right
+thermometer$race<-as.factor(thermometer$race)
+model<-lm(thermometer$ft_altright~thermometer$race)
+summary(model)
+
+
+#create a new data frame that only contains rows for democrats and republicans , new binary variable for party_id
+party_df<-subset.data.frame(thermometer, party_id %in% c("Democrat", "Republican"))
+party_df$dem_rep_bin<-ifelse(party_df$party_id=="Democrat",1,0)
+table(party_df$party_id)
+#add age into df
+party_df$age <- 2017 - party_df$birth_year
+#use multiples linear regression to build a model that predicts your binary party_id variable, include one feeling thermometer and one interaction term, justify your model, alt right and education predictive of party ID
+regression_model<-lm(
+  dem_rep_bin~ft_altright*educ, 
+  data=party_df
+)
+summary(regression_model)
+
+```
+ The coefficients in your model represent what change? 
+ 
+ The negative coefficients represents a negative change in probability of being a democrat based on the education of the respondent and the positive coefficients represent a positive change in probability of being a democrat based on the education of the respondent. 
+```{r}
+#Select one of the feeling thermometers in your model and plot how your 
+#predicted values change as the feeling thermometer changes. Interpret your results. Can this reasonably be interpreted as a causal effect?
+ft_seq<-seq(0,100, length.out=200)
+
+#hold constant education level
+pred_data<-(data.frame(educ="Post-grad", ft_altright=ft_seq
+                      ))
+#Predicted probabilities 
+pred_values<-predict(regression_model, newdata = pred_data)
+
+plot(ft_seq, pred_values, 
+     xlab = "Feeling Thermometer Alt Right",
+     ylab = "Predicted Probability of Being a Democrat")
+```
+
+
+Interpret your results. Can this reasonably be interpreted as a causal effect? 
+
+These results cannot be interpreted as causal given that unobserved confounders were not controlled for. This model shows that as a person rates their feeling toward the alt-right higher, their predicted probability of being a democrat decreases (when education is constant). This does not indicate that ranking the alt-right very warmly causes the individual to be a Republican. 
