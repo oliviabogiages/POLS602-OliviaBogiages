@@ -1,0 +1,74 @@
+---
+title: "Problem Set 3"
+author: "Olivia Bogiages"
+date: "2025-12-02"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+1. Research Goals
+Is the goal of the study causal inference, description, prediction, or something else? Have the authors clearly stated their goals? Describe any strengths or weaknesses in how the authors articulate their research objectives.
+
+  The goal of the study is causal inference.They identify two possible theories of civil war: religious/ethnic divide and conditions existing for insurgency. The various factors they look at to evaluate this relationship include poverty, rough terrain and political instability. The authors have a complicated research objective that seeks to establish a causal relationship in one area (conditions for insurgency and civil war onset), and disprove a previously posited causal relationship in another (ethnic/religious diversity and civil war onset). Regarding strengths, they do identify a host of factors relevant to the probability of civil war onset, adding relevant mechanisms to the discussion of civil conflict and its onset. 
+  
+
+2. Estimands
+Have the authors sufficiently defined their theoretical and empirical estimands?
+Discuss what these estimands are and explain how the authors could clarify them if
+necessary.
+
+The first theoretical estimand is the average causal effect of ethnic/religious diversity on the probability of civil war onset. The empirical estimand is the regression coefficient between the measures of ethnic and religious diversity (measured by the ELF, the grouping the authors constructed by the CIA factbook, the number of distinct languages exceeding 1% of the population and, the construction of the measure of religious fractionalization from the CIA factbook), and the probabilistic chance of civil war (defined as conflict that involved fighting between agents who sought to control the government, take power, or to change policies, had at least 1000 casualties with a yearl average over 100, and had at least 100 killed on both sides. ) 
+
+The second hypothesis' theoretical estimand is the average causal effect of higher per capita income on probability of civil war onset. The empirical estimand is the regression coefficient between income per capita and the probabilistic chance of civil war (as defined above). 
+
+The theoretical estimand for H3 is the average causal effect of an ethnic majority and a significant ehtnic minority (defined with a dummy variable marking the 74 countries
+whose largest and second-largest ethnic groups exceed
+49% and 7% of the population) on the probability of civil war onset. The empirical estimand is the regression coefficient between countries with (and without) these components and probability of civil war onset. 
+
+The fourth hypothesis has a theoretical estimand of average causal effect of measures of political democracy and civil liberties on probabiilty of civil war onset. (They use Polity IV and the Przeworski
+et al. 2000 democracy measures, along with the Freedom House indicator of the observance of civil liberties to determine if a country fits into the category of democracy and as possessing civil liberties). 
+The empirical estimand is the regression coefficient between countries with and without measures of political democracy and civil liberties and probabilistic chance of civil war onset. 
+
+The fifth theoretical estimand is the average causal effect of the presence religious/linguistic minorities where policies that discriminate towards the language or religion exist and the probability of civil war onset.  The empirical estimand is the regression coefficient between these two things. 
+
+The sixth theoretical estimand is the average causal effect of an increase in income inequality and the probability of civil war onset. The empirical estimand is the regression coefficient of income inequality as it relates to civil war onset. 
+
+The seventh theoretical estimand is the average causal effect of greater ethnic diversity in countries with a minority comprising at least 5% of the population on the probability of civil war onset. The empirical estimand is the regression coefficient between countries with a minority and the probability of civil war onset. 
+
+The eighth theoretical estimand is the average causal effect of the presence of rough terrain and poorly served roads at a distance from state power, the availability of foreign cross-border sanctuaries, and a local population willing to denounce insurgents to government agents, on the probability of civil war onset. The empirical estimand is the regression coefficient of these factors on the probability of civil war onset. 
+
+The ninth theoretical estimand is the average causal effect of the relative strength of the insurgents (proxies include odds of being killed or captured) on the probability of civil war onset. They specify that higher income per capita (as a proxy for the state's military, financial, admin and policing capabilities, and for more 'disciplined terrain') on the probabiltiy of civil war onset. The empirical estimand is the regression coefficient on the relative strength of the insurgency and the probability of civil war onset. 
+
+The tenth theoretical estimand is the average causal effect of the availability of a newly independent state, politically instability at the center, a regime that mixes democratic and autocratic features, a large country population, a territorial base seperate from the state's center, a foreign government/diaspora willing to supply money/weapon/training, land that supports the production of lpw-weight goods, a state whose revenues are primarily from oil  exports, on the probability of civil war onset. The empirical estimand is the regression coefficient between the availability of these things and the probability of civil war onset. 
+
+The eleventh theoretical estimand is the average causal effect of political democracy, the presence of civil liberties, higher income inequality, nondiscriminatory linguistic or religious policies (when per capita income is controlled for) on the probability of civil war onset. The empirical estimand is the regression coefficient of these factors on the probability of civil war onset. 
+
+3. Identification Strategy
+The way you connect your theoretical estimand to your empirical estimand is known
+as identification—in other words, what does the research do to ensure that the
+empirical estimand is a good measure of the theoretical estimand? Describe the
+authors’ identification strategy.
+
+The authors control for confounding variables within their regression model in order to link the theoretical estimands directly to the empirical estimand. They cannot guarentee they have controlled for every concievable confounder, however. Therefore, this identification strategy does not adequately link the theoretical and empirical estimands. 
+
+4. Assessment of Findings
+Provide an overall assessment of the paper and its conclusions. Does the
+identification strategy support the authors’ claims? For example, could the
+regression coefficients be credibly interpreted as causal effects if causal inferences the goal? 
+Does the model adequately represent the real-world data-generating
+process? Does the data credibly measure the phenomena being studied?
+
+The identification strategy of controlling for a number of factors within the regression does not control for unobserved factors. This means that a causal relationship cannot be asserted. The regression coefficients cannot be credibly interpreted as causal effects because unobserved factors were not controlled for. Aspects of the model do not adequately represent the real-world data generating process. Civil wars and their onset are unique to their context. Simply controlling for per capita income does not account for the unobserved factors that could also be influencing civil war onset, for example. 
+
+5. 
+Broader Contribution
+Despite any weaknesses, can this research still inform our understanding of the
+world? If so, how?
+
+Yes, this research can still inform our understanding of the world. This paper challenges the assertion that ethnically and religiously diverse countries are inherently prone to civil war by pointing to other factors that exist, like poverty or weak governance, that favor civil war. Although the identification strategy does not necessarily effectively achieve the goal of establishing a causal relationship for each hypothesis, this paper challenges the existing literature's assertion that there is an inherent risk of civil war in ethnically and religiously diverse countries. It also provides possible associations that should be taken into account when studying civil war onset, even if those associations cannot be shown to be causal. The mechanisms for increasing probability of civil war onset in this paper are still informative in that the authors bring up many factors associated with civil war onset. 
+```{r}
+
+```
+
