@@ -1,0 +1,111 @@
+---
+title: "Problem Set 4 Simulation"
+author: "Olivia Bogiages"
+date: "2025-12-03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+set.seed(345)
+#population
+N<-50000
+```
+
+Refer to figure 2 in Causal Inference Is Not Just a Statistics Problem to help with generating
+the data, or draw your own DAG to illustrate the causal relationships.
+
+Start by generating random data for variables that are not causally affected by any others in
+your DAG (e.g. the confounder and exogenous variables). Then, generate the remaining
+variables as linear functions of the variables that causally affect them. Each linear function
+should have beta coe>icients that represent the true e>ect size, and a random error term.
+
+Confounder: membership of an oppressed group, could bring closer to the violence and also closer to radical groups and recruitment
+```{r}
+#Simulate a confounder
+C_oppr <- rnorm(N, 0,1)
+
+#An independent variable that has an exogenous effect on the treatment variable
+#(this is also known as an instrument). Variable: urban/rural
+
+Inst_Urban<-rbinom(n=50000,  size=1, prob=.7)
+
+#Independent Variable, Proximity to violence
+I_Prox <- rnorm(N)
+#Dependent variable, Radicalization
+D_Rad <- rnorm(N)+C_oppr+Inst_Urban
+```
+
+Mediator:Displacement, violence causes loss of home, pushes someone towards extreme options
+```{r}
+#Simulate a mediator
+M_Displ = .2*I_Prox + rnorm(N, 0,1)
+```
+Collider: Extra police or military presence, more present state force where there is violence and also in communities considered radical
+
+```{r}
+#A collider
+Ex_Pol=.4*I_Prox+.3*D_Rad+rnorm(N, 0,1)
+
+#An independent variable that has an exogenous effect on the outcome variable (i.e.
+#it affects Y but does not affect any other variable in your DAG), #outreach by/recruitment by radical groups
+
+Ex_Recr=rnorm(N,0,1)
+```
+
+```{r}
+#Data Frame 
+Proximity_Data<- data.frame(
+  Proximity_to_Violence=c(I_Prox), 
+  Radicalization=c(D_Rad),
+  Membership_of_Oppressed_Group= c(C_oppr), 
+  Extra_Police= c(Ex_Pol), 
+  Exogenous_Recruitment=c(Ex_Recr), 
+  Displacement=c(M_Displ),
+  Urban_Rural=c(Inst_Urban)
+)
+```
+1. Fit a model that recovers the direct effect of the treatment on the outcome variable. Which variables are necessary to recover the direct effect? 
+
+It is necessary to include both the confounder and the mediator to recover the direct effect of the indpendent variable on the dependent vairable. This is to ensure that there is no bias and that your coefficients are not being over-attributed with a causal relationship that does not exist in order to isolate the direct relationship of the vairables you are looking at. 
+```{r}
+#Direct effect of proximity on radicalization
+direct_effect<-lm(D_Rad~I_Prox+C_oppr+M_Displ, data=Proximity_Data)
+summary(direct_effect)
+```
+
+
+2. Fit a model that recovers the total effect of the treatment on the outcome variable. How does your model change to estimate the total effect?
+The total effect has a lower coefficient of .0028 compared to the direct effect coefficient of .0035.
+
+```{r}
+#Remove the mediator but keep the confounder to look at total effect 
+total_effect<-lm(D_Rad~I_Prox+C_oppr, data=Proximity_Data)
+summary(total_effect)
+```
+
+How do your results change when you control for the collider, the exogenous independent variable, or the instrument (individually, not all simultaneously)? 
+
+When I control for the collider the coefficient and intercept increases, this opens up a backdoor. When I control for the exogenous independent variable, the coefficient is much higher at .01, than the intial model. Controlling for the instrument yields a slightly lower coefficient of .0031 but it impacts the intercept. 
+
+```{r}
+#control for the collider 
+collider_control<-lm(D_Rad~I_Prox+Ex_Pol)
+summary(collider_control)
+
+#control for the exogenous independent variable
+exog_control<-lm(D_Rad~I_Prox+Ex_Recr)
+summary(exog_control)
+
+#control for the instrument 
+inst_control<-lm(D_Rad~I_Prox+Inst_Urban)
+summary(inst_control)
+```
+
+
+Given the reading and simulation results, how should you choose which variables to include in a model?
+You should first assess what kind of variables you have, and determine based on your hypothesis and theory exactly what role they play in the model. You should always include a confounder because failing to do so would bias your model. You should assess if you have colliders and if so, you should never include the collider. You should include the mediator only if you want the direct affect. 
+
